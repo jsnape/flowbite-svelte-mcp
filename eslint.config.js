@@ -1,6 +1,7 @@
 import js from '@eslint/js';
 import tseslint from 'typescript-eslint';
 import prettier from 'eslint-config-prettier';
+import globals from 'globals';
 
 export default [
   // Ignore patterns
@@ -23,32 +24,41 @@ export default [
   // TypeScript files
   ...tseslint.configs.recommended,
 
-  // Custom rules for all files (Updated file glob)
+  // Node.js globals for all files
   {
-    files: ['**/*.{ts,js,mjs,cjs}'], // Widen to include .mjs and .cjs
+    files: ['**/*.{ts,js,mjs,cjs}'],
     languageOptions: {
       ecmaVersion: 2022,
       sourceType: 'module',
       globals: {
-        console: 'readonly',
-        process: 'readonly',
-        Buffer: 'readonly',
-        __dirname: 'readonly',
-        __filename: 'readonly',
-        exports: 'writable',
-        module: 'writable',
-        require: 'readonly',
-        global: 'readonly',
-        setTimeout: 'readonly',
-        clearTimeout: 'readonly',
-        setInterval: 'readonly',
-        clearInterval: 'readonly',
-        fetch: 'readonly', // Node 20+ built-in
+        ...globals.node,
       },
     },
+  },
+
+  // TypeScript-specific rules
+  {
+    files: ['**/*.ts'],
     rules: {
       'no-console': 'off',
+      'no-unused-vars': 'off', // Disable base rule to avoid conflicts
       '@typescript-eslint/no-unused-vars': [
+        'error',
+        {
+          argsIgnorePattern: '^_',
+          varsIgnorePattern: '^_',
+          caughtErrorsIgnorePattern: '^_',
+        },
+      ],
+    },
+  },
+
+  // JavaScript-specific rules
+  {
+    files: ['**/*.{js,mjs,cjs}'],
+    rules: {
+      'no-console': 'off',
+      'no-unused-vars': [
         'error',
         {
           argsIgnorePattern: '^_',
