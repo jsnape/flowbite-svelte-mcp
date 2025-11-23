@@ -9,3 +9,7 @@ mcp-docs
 
 # Generated data files
 src/data/llm/
+
+# Test coverage reports
+coverage/
+*.lcov
