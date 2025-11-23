@@ -1,22 +1,39 @@
 import js from '@eslint/js';
-import jsdoc from 'eslint-plugin-jsdoc';
-import tseslint from '@typescript-eslint/eslint-plugin';
-import tsparser from '@typescript-eslint/parser';
+import tseslint from 'typescript-eslint';
 import prettier from 'eslint-config-prettier';
 
 export default [
-  js.configs.recommended,
-  jsdoc.configs['flat/recommended'],
+  // Ignore patterns
+  {
+    ignores: [
+      'node_modules/**',
+      'build/**',
+      'dist/**',
+      'coverage/**',
+      '*.config.js',
+      '*.config.ts',
+      'pnpm-lock.yaml',
+    ],
+  },
+
+  // JavaScript files
+  {
+    files: ['**/*.js', '**/*.mjs', '**/*.cjs'],
+    ...js.configs.recommended,
+  },
+
+  // TypeScript files
+  ...tseslint.configs.recommended,
+  
+  // Prettier (disable conflicting rules)
   prettier,
 
+  // Custom rules for all files
   {
-    files: ['**/*.ts'],
+    files: ['**/*.ts', '**/*.js'],
     languageOptions: {
-      parser: tsparser,
-      parserOptions: {
-        ecmaVersion: 'latest',
-        sourceType: 'module',
-      },
+      ecmaVersion: 2022,
+      sourceType: 'module',
       globals: {
         console: 'readonly',
         process: 'readonly',
@@ -31,12 +48,8 @@ export default [
         clearTimeout: 'readonly',
         setInterval: 'readonly',
         clearInterval: 'readonly',
-        fetch: 'readonly', // Node 18+ built-in
+        fetch: 'readonly',
       },
-    },
-    plugins: {
-      jsdoc,
-      '@typescript-eslint': tseslint,
     },
     rules: {
       'no-console': 'off',
@@ -48,17 +61,6 @@ export default [
           caughtErrorsIgnorePattern: '^_',
         },
       ],
-
-      'jsdoc/require-jsdoc': 'off',
-      'jsdoc/require-param-description': 'warn',
-      'jsdoc/require-returns-description': 'warn',
-      'jsdoc/check-tag-names': 'warn',
-      'jsdoc/check-types': 'warn',
-      'jsdoc/valid-types': 'warn',
     },
-  },
-
-  {
-    ignores: ['node_modules/**', 'build/**', 'dist/**', '*.config.js', 'pnpm-lock.yaml'],
   },
 ];
