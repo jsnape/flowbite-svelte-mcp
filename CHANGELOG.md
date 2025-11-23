@@ -1,5 +1,11 @@
 # flowbite-svelte-mcp
 
+## 0.3.0
+
+### Minor Changes
+
+- tests: add vitest
+
 ## 0.2.2
 
 ### Patch Changes
