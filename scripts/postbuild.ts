@@ -51,7 +51,7 @@ async function main() {
     } catch {
       console.error('❌ Error: Source data directory not found!');
       console.error(`   Expected: ${SOURCE_DIR}`);
-      console.error('   Run "npm run copy:llm" first to populate the data directory.');
+      console.error('   Run "pnpm run copy:llm" first to populate the data directory.');
       process.exit(1);
     }
 

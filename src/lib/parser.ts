@@ -2,7 +2,7 @@
  * Parsing utilities for llms.txt files
  */
 
-const BASE_URL = 'https://flowbite-svelte.com';
+import { BASE_URL } from './constants.js';
 
 /**
  * Parse llms.txt content to extract documentation file paths

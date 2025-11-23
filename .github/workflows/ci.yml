@@ -39,12 +39,14 @@ jobs:
       - name: Run tests
         run: pnpm test
 
+      # Only generate coverage on Node 20.x to save CI time
       - name: Generate coverage report
+        if: matrix.node-version == '20.x'
         run: pnpm test:coverage
 
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v4
         if: matrix.node-version == '20.x'
+        uses: codecov/codecov-action@v4
         with:
           files: ./coverage/coverage-final.json
           flags: unittests

@@ -4,7 +4,7 @@ This directory contains the test suite for the Flowbite-Svelte MCP server.
 
 ## Test Structure
 
-```
+```text
 tests/
 ├── parser.test.ts       # Unit tests for parsing logic
 ├── integration.test.ts  # Integration tests with real data

@@ -13,14 +13,10 @@ import { promises as fs } from 'fs';
 import * as path from 'path';
 import { fileURLToPath } from 'url';
 import { parseLlmsTxt, isValidFilePath } from '../src/lib/parser.js';
+import { LLMS_TXT_URL, LLM_DIR_URL } from '../src/lib/constants.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-
-// Remote URLs
-const BASE_URL = 'https://flowbite-svelte.com';
-const LLMS_TXT_URL = `${BASE_URL}/llms.txt`;
-const LLM_DIR_URL = `${BASE_URL}/llm`;
 
 // Local destination
 const DEST_LLM_DIR = path.resolve(__dirname, '../src/data/llm');
