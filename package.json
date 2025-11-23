@@ -4,7 +4,7 @@
   "description": "MCP server for Flowbite-Svelte documentation (LLM)",
   "type": "module",
   "engines": {
-    "node": ">=18.0.0"
+    "node": ">=20.0.0"
   },
   "scripts": {
     "build": "pnpm copy:llm && tsc && tsx scripts/postbuild.ts",

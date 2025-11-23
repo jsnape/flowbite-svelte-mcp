@@ -48,7 +48,7 @@ export default [
         clearTimeout: 'readonly',
         setInterval: 'readonly',
         clearInterval: 'readonly',
-        fetch: 'readonly',
+        fetch: 'readonly', // Node 20+ built-in
       },
     },
     rules: {
