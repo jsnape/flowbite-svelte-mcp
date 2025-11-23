@@ -24,13 +24,10 @@ export default [
 
   // TypeScript files
   ...tseslint.configs.recommended,
-  
-  // Prettier (disable conflicting rules)
-  prettier,
 
-  // Custom rules for all files
+  // Custom rules for all files (Updated file glob)
   {
-    files: ['**/*.ts', '**/*.js'],
+    files: ['**/*.{ts,js,mjs,cjs}'], // Widen to include .mjs and .cjs
     languageOptions: {
       ecmaVersion: 2022,
       sourceType: 'module',
@@ -63,4 +60,7 @@ export default [
       ],
     },
   },
+
+  // Prettier (disable conflicting rules - Moved to the end)
+  prettier,
 ];
