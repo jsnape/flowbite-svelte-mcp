@@ -37,7 +37,6 @@ This server uses stdio transport, so it's compatible with MCP clients that launc
 ### Claude Desktop
 
 1. **Locate your configuration file:**
-
    - macOS: `~/Library/Application Support/Claude/claude_desktop_config.json`
    - Windows: `%APPDATA%\Claude\claude_desktop_config.json`
 
@@ -48,9 +47,7 @@ This server uses stdio transport, so it's compatible with MCP clients that launc
      "mcpServers": {
        "flowbite-svelte": {
          "command": "node",
-         "args": [
-           "/Users/your-user-name/path/to/flowbite-svelte-mcp/build/server.js"
-         ]
+         "args": ["/Users/your-user-name/path/to/flowbite-svelte-mcp/build/server.js"]
        }
      }
    }
@@ -76,7 +73,7 @@ This server uses stdio transport, so it's compatible with MCP clients that launc
 
 ### Project Structure
 
-```
+```text
 flowbite-svelte-mcp/
 ├── src/
 │   ├── data/
@@ -86,7 +83,7 @@ flowbite-svelte-mcp/
 │   └── server.ts                # MCP server entry point
 ├── build/                       # Compiled output (generated)
 ├── scripts/
-│   ├── copyLlmData.ts          # Copy docs from flowbite-svelte
+│   ├── copyLlmData.ts          # Copy docs from flowbite-svelte.com
 │   ├── postbuild.ts            # Copy data to build directory
 │   └── generateComponentRegistry.ts
 └── package.json
@@ -95,7 +92,7 @@ flowbite-svelte-mcp/
 ### Scripts
 
 ```bash
-# Copy LLM documentation from flowbite-svelte. Run this before publishing the package
+# Copy LLM documentation from flowbite-svelte.com. Run this before publishing the package
 pnpm run copy:llm
 
 # Generate component registry
@@ -106,6 +103,11 @@ pnpm run build
 
 # Start the server
 pnpm run start
+
+# Testing
+pnpm test              # Run all tests
+pnpm test:watch        # Run tests in watch mode
+pnpm test:coverage     # Run tests with coverage report
 
 # Linting and formatting
 pnpm run lint
@@ -121,13 +123,13 @@ pnpm run format:check
 - **Framework:** Built with `tmcp` (TypeScript MCP SDK)
 - **Transport:** Stdio transport for MCP client communication
 - **Schema Validation:** Zod with JSON Schema adapter
-- **Documentation Source:** Local files copied from flowbite-svelte
+- **Documentation Source:** Local files copied from flowbite-svelte.com
 
 ### Data Flow
 
-```
-flowbite-svelte/static/llm/
-          ↓ (copy:llm)
+```text
+https://flowbite-svelte.com/llm/
+          ↓ (copy:llm script)
 src/data/llm/
           ↓ (build → postbuild)
 build/data/llm/
@@ -138,10 +140,28 @@ MCP Tools → Claude/Client
 ### Why Local Files?
 
 We store documentation files locally (instead of fetching remotely) for:
+
 - ⚡ **Performance** - No network latency
 - 🔌 **Offline Support** - Works without internet
 - 🎯 **Reliability** - No external service dependencies
 - 📦 **Self-Contained** - Everything bundled together
+
+## Testing
+
+The project includes a comprehensive test suite using Vitest:
+
+```bash
+# Run all tests
+pnpm test
+
+# Watch mode (auto-rerun on changes)
+pnpm test:watch
+
+# Coverage report
+pnpm test:coverage
+```
+
+See [tests/README.md](./tests/README.md) for more details on the test suite.
 
 ## Troubleshooting
 
@@ -152,6 +172,7 @@ We store documentation files locally (instead of fetching remotely) for:
 ### Tools not working in Claude Desktop
 
 **Solutions:**
+
 1. Check that the path in `claude_desktop_config.json` is correct and absolute
 2. Restart Claude Desktop after making configuration changes
 3. Check Claude Desktop logs for errors
@@ -172,4 +193,4 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 ---
 
-**Made with ❤️ for the Flowbite-Svelte community**
+### Made with ❤️ for the Flowbite-Svelte community

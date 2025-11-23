@@ -12,6 +12,7 @@
 import { promises as fs } from 'fs';
 import * as path from 'path';
 import { fileURLToPath } from 'url';
+import { parseLlmsTxt, isValidFilePath } from '../src/lib/parser.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -25,52 +26,39 @@ const LLM_DIR_URL = `${BASE_URL}/llm`;
 const DEST_LLM_DIR = path.resolve(__dirname, '../src/data/llm');
 
 /**
- * Fetch and parse llms.txt to get list of documentation files
+ * Fetch llms.txt content from remote URL
+ * @returns {Promise<string>} The raw content of llms.txt
  */
-async function fetchLlmsTxt(): Promise<string[]> {
+async function fetchLlmsTxtContent(): Promise<string> {
   const response = await fetch(LLMS_TXT_URL);
   if (!response.ok) {
     throw new Error(`Failed to fetch llms.txt: ${response.statusText}`);
   }
-  const content = await response.text();
-  
-  // Parse llms.txt to extract file paths
-  // Format is typically: # Comments and https://domain.com/path/to/file.md
-  const lines = content.split('\n');
-  const files: string[] = [];
-  
-  for (const line of lines) {
-    const trimmed = line.trim();
-    // Skip comments and empty lines
-    if (!trimmed || trimmed.startsWith('#')) continue;
-    
-    // Extract path from URL
-    if (trimmed.startsWith(BASE_URL)) {
-      const urlPath = trimmed.replace(BASE_URL, '');
-      if (urlPath.startsWith('/llm/')) {
-        files.push(urlPath.replace('/llm/', ''));
-      }
-    }
-  }
-  
-  return files;
+  return response.text();
 }
 
 /**
  * Fetch a file from URL and save it locally
+ * @param {string} relativePath - Relative path of the file to fetch
+ * @returns {Promise<void>}
  */
 async function fetchAndSaveFile(relativePath: string): Promise<void> {
+  // Validate the file path for security
+  if (!isValidFilePath(relativePath)) {
+    throw new Error(`Invalid file path detected: ${relativePath}`);
+  }
+
   const url = `${LLM_DIR_URL}/${relativePath}`;
   const destPath = path.join(DEST_LLM_DIR, relativePath);
-  
+
   // Create directory if needed
   await fs.mkdir(path.dirname(destPath), { recursive: true });
-  
+
   const response = await fetch(url);
   if (!response.ok) {
     throw new Error(`Failed to fetch ${url}: ${response.statusText}`);
   }
-  
+
   const content = await response.text();
   await fs.writeFile(destPath, content, 'utf-8');
   console.log(`  ✓ Downloaded: ${relativePath}`);
@@ -78,6 +66,7 @@ async function fetchAndSaveFile(relativePath: string): Promise<void> {
 
 /**
  * Main execution
+ * @returns {Promise<void>}
  */
 async function main() {
   try {
@@ -92,20 +81,26 @@ async function main() {
     }
     await fs.mkdir(DEST_LLM_DIR, { recursive: true });
 
-    // Fetch and save llms.txt
+    // Fetch llms.txt content (single fetch)
     console.log('\n📄 Downloading llms.txt...');
-    const llmsTxtResponse = await fetch(LLMS_TXT_URL);
-    if (!llmsTxtResponse.ok) {
-      throw new Error(`Failed to fetch llms.txt: ${llmsTxtResponse.statusText}`);
-    }
-    const llmsTxtContent = await llmsTxtResponse.text();
+    const llmsTxtContent = await fetchLlmsTxtContent();
+    
+    // Save llms.txt locally
     await fs.writeFile(path.join(DEST_LLM_DIR, 'llms.txt'), llmsTxtContent, 'utf-8');
     console.log('  ✓ Downloaded: llms.txt');
 
-    // Parse llms.txt to get file list
+    // Parse llms.txt to get file list (no additional fetch)
     console.log('\n📋 Parsing file list from llms.txt...');
-    const files = await fetchLlmsTxt();
+    const files = parseLlmsTxt(llmsTxtContent);
     console.log(`  Found ${files.length} files to download`);
+
+    // Validate all files before downloading
+    const invalidFiles = files.filter(f => !isValidFilePath(f));
+    if (invalidFiles.length > 0) {
+      console.error('\n❌ Invalid file paths detected:');
+      invalidFiles.forEach(f => console.error(`   - ${f}`));
+      throw new Error('Security check failed: Invalid file paths found');
+    }
 
     // Download all files
     console.log('\n📂 Downloading documentation files...');

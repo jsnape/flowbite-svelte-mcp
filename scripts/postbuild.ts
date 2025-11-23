@@ -2,7 +2,6 @@
 /**
  * Post-build script to copy LLM data files to the build directory
  * This ensures the compiled code can find the data files at runtime
- * 
  * Run automatically after: npm run build
  */
 
@@ -18,9 +17,9 @@ const DEST_DIR = path.resolve(__dirname, '../build/data');
 
 /**
  * Recursively copy directory contents
- * 
  * @param {string} src - Source directory path
  * @param {string} dest - Destination directory path
+ * @returns {Promise<void>}
  */
 async function copyDir(src: string, dest: string): Promise<void> {
   await fs.mkdir(dest, { recursive: true });
@@ -40,6 +39,7 @@ async function copyDir(src: string, dest: string): Promise<void> {
 
 /**
  * Main execution
+ * @returns {Promise<void>}
  */
 async function main() {
   try {
@@ -56,6 +56,7 @@ async function main() {
     }
 
     // Copy data directory
+    await fs.rm(DEST_DIR, { recursive: true, force: true });
     await copyDir(SOURCE_DIR, DEST_DIR);
 
     console.log('✅ Data files copied successfully!');
