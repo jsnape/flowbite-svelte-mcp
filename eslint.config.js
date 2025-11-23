@@ -1,44 +1,47 @@
 import js from '@eslint/js';
-import jsdoc from 'eslint-plugin-jsdoc';
-import tseslint from '@typescript-eslint/eslint-plugin';
-import tsparser from '@typescript-eslint/parser';
+import tseslint from 'typescript-eslint';
 import prettier from 'eslint-config-prettier';
+import globals from 'globals';
 
 export default [
-  js.configs.recommended,
-  jsdoc.configs['flat/recommended'],
-  prettier,
+  // Ignore patterns
+  {
+    ignores: [
+      'node_modules/**',
+      'build/**',
+      'dist/**',
+      'coverage/**',
+      'pnpm-lock.yaml',
+    ],
+  },
 
+  // JavaScript files
+  {
+    files: ['**/*.js', '**/*.mjs', '**/*.cjs'],
+    ...js.configs.recommended,
+  },
+
+  // TypeScript files
+  ...tseslint.configs.recommended,
+
+  // Node.js globals for all files
+  {
+    files: ['**/*.{ts,js,mjs,cjs}'],
+    languageOptions: {
+      ecmaVersion: 2022,
+      sourceType: 'module',
+      globals: {
+        ...globals.node,
+      },
+    },
+  },
+
+  // TypeScript-specific rules
   {
     files: ['**/*.ts'],
-    languageOptions: {
-      parser: tsparser,
-      parserOptions: {
-        ecmaVersion: 'latest',
-        sourceType: 'module',
-      },
-      globals: {
-        console: 'readonly',
-        process: 'readonly',
-        Buffer: 'readonly',
-        __dirname: 'readonly',
-        __filename: 'readonly',
-        exports: 'writable',
-        module: 'writable',
-        require: 'readonly',
-        global: 'readonly',
-        setTimeout: 'readonly',
-        clearTimeout: 'readonly',
-        setInterval: 'readonly',
-        clearInterval: 'readonly',
-      },
-    },
-    plugins: {
-      jsdoc,
-      '@typescript-eslint': tseslint,
-    },
     rules: {
       'no-console': 'off',
+      'no-unused-vars': 'off', // Disable base rule to avoid conflicts
       '@typescript-eslint/no-unused-vars': [
         'error',
         {
@@ -47,17 +50,25 @@ export default [
           caughtErrorsIgnorePattern: '^_',
         },
       ],
-
-      'jsdoc/require-jsdoc': 'off',
-      'jsdoc/require-param-description': 'warn',
-      'jsdoc/require-returns-description': 'warn',
-      'jsdoc/check-tag-names': 'warn',
-      'jsdoc/check-types': 'warn',
-      'jsdoc/valid-types': 'warn',
     },
   },
 
+  // JavaScript-specific rules
   {
-    ignores: ['node_modules/**', 'build/**', 'dist/**', '*.config.js', 'pnpm-lock.yaml'],
+    files: ['**/*.{js,mjs,cjs}'],
+    rules: {
+      'no-console': 'off',
+      'no-unused-vars': [
+        'error',
+        {
+          argsIgnorePattern: '^_',
+          varsIgnorePattern: '^_',
+          caughtErrorsIgnorePattern: '^_',
+        },
+      ],
+    },
   },
+
+  // Prettier (disable conflicting rules - Moved to the end)
+  prettier,
 ];

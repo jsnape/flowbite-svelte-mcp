@@ -1,10 +1,16 @@
 import fs from 'fs';
 import path from 'path';
 
-const libPath = '/Users/shinichiokada/Flowbite/flowbite-svelte-local-development/src/lib';
+const libPath = '/Users/shinichiokada/Flowbite/flowbite-svelte/src/lib';
 const outputPath = './src/data/components.json';
 
-const registry: Record<string, any> = {};
+interface ComponentGroup {
+  components: string[];
+  category: string;
+  docUrl: string;
+}
+
+const registry: Record<string, ComponentGroup> = {};
 
 // Recursive function to find all component directories
 function findComponentDirectories(basePath: string, relativePath: string = ''): void {

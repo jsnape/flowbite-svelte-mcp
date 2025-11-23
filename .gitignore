@@ -1,7 +1,15 @@
 node_modules
+build
 .claude
 .DS_Store
 mcp-docs
 .env
 .env.*
 !.env.example
+
+# Generated data files
+src/data/llm/
+
+# Test coverage reports
+coverage/
+*.lcov
