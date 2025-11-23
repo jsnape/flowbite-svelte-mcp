@@ -10,8 +10,6 @@ export default [
       'build/**',
       'dist/**',
       'coverage/**',
-      '*.config.js',
-      '*.config.ts',
       'pnpm-lock.yaml',
     ],
   },
