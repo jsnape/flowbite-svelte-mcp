@@ -18,6 +18,7 @@ It exposes tools to find components, query component docs, list components, and 
 git clone git@github.com:shinokada/flowbite-svelte-mcp.git
 cd flowbite-svelte-mcp
 pnpm install
+pnpm run copy:llm  # Fetch latest Flowbite-Svelte docs
 ```
 
 ### Setup

@@ -7,7 +7,7 @@
     "node": ">=20.0.0"
   },
   "scripts": {
-    "build": "pnpm copy:llm && tsc && tsx scripts/postbuild.ts",
+    "build": "tsc && tsx scripts/postbuild.ts",
     "start": "node build/server.js",
     "test": "vitest run",
     "test:watch": "vitest",
