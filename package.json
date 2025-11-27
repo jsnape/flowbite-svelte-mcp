@@ -1,6 +1,6 @@
 {
   "name": "flowbite-svelte-mcp",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "MCP server for Flowbite-Svelte documentation (LLM)",
   "type": "module",
   "engines": {
@@ -46,5 +46,18 @@
     "mcp",
     "mcp server",
     "flowbite-svelte"
-  ]
+  ],
+  "author": {
+    "name": "Shinichi Okada",
+    "url": "https://codewithshin.com"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shinokada/flowbite-svelte-mcp.git"
+  },
+  "bugs": {
+    "url": "https://github.com/shinokada/flowbite-svelte-mcp/issues"
+  },
+  "homepage": "https://flowbite-svelte.com/docs/mcp/overview"
 }

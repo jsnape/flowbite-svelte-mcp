@@ -18,17 +18,13 @@ It exposes tools to find components, query component docs, list components, and 
 git clone git@github.com:shinokada/flowbite-svelte-mcp.git
 cd flowbite-svelte-mcp
 pnpm install
-pnpm run copy:llm  # Fetch latest Flowbite-Svelte docs
 ```
 
 ### Setup
 
 ```bash
-# Build the project (compiles TypeScript + copies data files)
+# Build the project (TypeScript compilation + data copy)
 pnpm run build
-
-# Start the server
-pnpm run start
 ```
 
 ## Usage
@@ -48,7 +44,7 @@ This server uses stdio transport, so it's compatible with MCP clients that launc
      "mcpServers": {
        "flowbite-svelte": {
          "command": "node",
-         "args": ["/Users/your-user-name/path/to/flowbite-svelte-mcp/build/server.js"]
+         "args": ["/ABSOLUTE/PATH/TO/flowbite-svelte-mcp/build/server.js"]
        }
      }
    }
@@ -93,7 +89,7 @@ flowbite-svelte-mcp/
 ### Scripts
 
 ```bash
-# Copy LLM documentation from flowbite-svelte.com. Run this before publishing the package
+# Copy LLM documentation from flowbite-svelte.com.
 pnpm run copy:llm
 
 # Generate component registry
@@ -102,8 +98,8 @@ pnpm run gen:registry
 # Build the project (TypeScript compilation + data copy)
 pnpm run build
 
-# Start the server
-pnpm run start
+# Start the server (for manual testing/debugging) (Executed by Claude, rarely by developer)
+pnpm run start 
 
 # Testing
 pnpm test              # Run all tests
@@ -146,6 +142,7 @@ We store documentation files locally (instead of fetching remotely) for:
 - 🔌 **Offline Support** - Works without internet
 - 🎯 **Reliability** - No external service dependencies
 - 📦 **Self-Contained** - Everything bundled together
+- 🔒 **Security** - Reduces external attack surface and eliminates need for runtime network permissions/calls.
 
 ## Testing
 
