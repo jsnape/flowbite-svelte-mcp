@@ -598,8 +598,7 @@
   },
   "typography/img": {
     "components": [
-      "Img",
-      "EnhancedImg"
+      "Img"
     ],
     "category": "typography",
     "docUrl": "typography/img"

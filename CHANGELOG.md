@@ -1,5 +1,11 @@
 # flowbite-svelte-mcp
 
+## 0.3.2
+
+### Patch Changes
+
+- docs: README, pakcage.json
+
 ## 0.3.1
 
 ### Patch Changes
